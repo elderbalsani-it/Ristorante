@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./styles/output.css">
+    
+    <title>Sniper Ristorante</title>
+</head>
+<body>
+    
+    <!-- HEADER -->
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+        <div class="w-full h-full flex flex-col justify-center items-center">
+            <img 
+                src="./assets/ristorante.png"
+                alt="Logo Ristorante"
+                class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
+            /> 
+            <h1 class="text-4xl mt-4 mb-2 font-bold text-white">
+                Sniper Ristorante
+            </h1>
+
+            <span class="text-white font-medium">Via A, 123, Rome</span>
+
+            <div class="bg-orange-500 px-4 py-1 rounded-lg mt-5" id="date-span">
+                <span class="text-white font-medium">Aperto tutti i giorni, dalle 11:00 alle 23:59</span>
+            </div>
+        </div>
+    </header>
+    <!-- FIM DO HEADER -->
+
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
+        Il Nostro Menu
+    </h2>
+
+    <!-- INICIO MENU -->
+    <div id="menu" class="px-4"> 
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-16">
+            <a href="./antipasti.html" class="flex flex-col items-center">
+                <img src="./assets/antipasti.png" alt="Antipasti" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Antipasti</p>
+            </a>
+            <a href="./primo-piatto.html" class="flex flex-col items-center">
+                <img src="./assets/Primi Piatti.png" alt="Primo Piatto" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Primo Piatto</p>
+            </a>
+            <a href="./secondo-piatto.html" class="flex flex-col items-center">
+                <img src="./assets/Secondi Piatti.png" alt="Secondo Piatto" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Secondo Piatto</p>
+            </a>
+            <a href="./dolci.html" class="flex flex-col items-center">
+                <img src="./assets/Dolci.png" alt="Dolci" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Dolci</p>
+            </a>
+        </main>
+
+        <div class="mx-auto max-w-7xl px-2 my-2">
+            <h2 class="font-bold text-3xl text-center">Bevande</h2>
+
+            <a href="./bevande.html" class="flex flex-col items-center">
+                <img src="./assets/Bevandi.png" alt="Bevande" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Bevande</p>
+        </div>
+
+        <!-- GRID BEBIDAS -->
+        <div class="flex justify-center mb-16
