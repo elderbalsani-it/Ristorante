@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/output.css">
+    <title>Secondi Piatti - Sniper Ristorante</title>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="w-full h-[420px] bg-zinc-900 bg-home bg-cover bg-center">
+        <div class="w-full h-full flex flex-col justify-center items-center">
+            <img 
+                src="./assets/ristorante.png"
+                alt="Logo Ristorante"
+                class="w-32 h-32 rounded-full shadow-lg hover:scale-110 duration-200"
+            /> 
+            <h1 class="text-4xl mt-4 mb-2 font-bold text-white">
+                Sniper Ristorante - Secondi Piatti
+            </h1>
+            <span class="text-white font-medium">Via A, 123, Rome</span>
+            <div class="bg-orange-500 px-4 py-1 rounded-lg mt-5" id="date-span">
+                <span class="text-white font-medium">Aperto tutti i giorni, dalle 11:00 alle 23:59</span>
+            </div>
+        </div>
+    </header>
+    <!-- FIM DO HEADER -->
+
+    <h2 class="text-2xl md:text-3xl font-bold text-center mt-9 mb-6">
+        Secondi Piatti
+    </h2>
+
+    <!-- TOTAL DO CARRINHO -->
+    <div class="text-center mb-6">
+        <p class="text-lg font-bold">Total do Carrinho: <span id="total-price" class="text-orange-500">€0,00</span></p>
+        <p class="text-lg font-bold">Quantidade total: <span id="total-quantity" class="text-orange-500">0</span></p>
+    </div>
+
+    <!-- INICIO DOS ITENS DE SECONDI PIATTI -->
+    <div class="px-4">
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Item 1 -->
+            <div class="flex flex-col items-center">
+                <img src="./assets/bistecca.png" alt="Bistecca" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Bistecca alla Fiorentina</p>
+                <p class="text-sm text-gray-600">Bife grosso grelhado com sal grosso</p>
+                <p class="text-orange-500 font-semibold mt-2">€25,00</p>
+                <div class="flex items-center mt-2">
+                    <button class="bg-orange-500 text-white px-2 py-1 rounded" onclick="adjustQuantity(25.00, 1)">+</button>
+                    <span class="mx-2"></span> <!-- Espaçamento entre os botões -->
+                    <button class="bg-orange-500 text-white px-2 py-1 rounded" onclick="adjustQuantity(25.00, -1)">-</button>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="flex flex-col items-center">
+                <img src="./assets/pollo.png" alt="Pollo" class="w-28 h-28 rounded-md hover:scale-110 hover:-rotate-2 duration-300" />
+                <p class="font-bold">Pollo al Forno</p>
+                <p class="text-sm text-gray-600">Frango assado com batatas</p>
+                <p class="text-orange-500 font-semibold mt-2">€20,00</p>
+                <div class="flex items-center mt-2">
+                    <button class="bg-orange-500 text-white px-2 py-1 rounded" onclick="adjustQuantity(20.00, 1)">+</button>
+                    <span class="mx-2"></span> <!-- Espaçamento entre os botões -->
+                    <button class="bg-orange-500 text-white px-2 py-1 rounded" onclick="adjustQuantity(20.00, -1)">-</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- FIM DOS ITENS DE SECONDI PIATTI -->
+
+    <script>
+        let total = 0;
+        let totalQuantity = 0;
+
+        function adjustQuantity(price, change) {
+            totalQuantity += change;
+
+            // Impede que a quantidade fique negativa
+            if (totalQuantity < 0) {
+                totalQuantity = 0;
+            }
+
+            // Atualiza o total com base na quantidade e no preço
+            total += change > 0 ? price : -price;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById("total-price").innerText = `€${total.toFixed(2)}`;
+            document.getElementById("total-quantity").innerText = totalQuantity;
+        }
+    </script>
+</body>
+</html>
