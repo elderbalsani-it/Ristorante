@@ -26,10 +26,12 @@
         Menu
     </h2>
 
-    <!-- TOTAL DO CARRINHO -->
-    <div class="text-center mb-6">
-        <p class="text-lg font-bold">Total: <span id="total-price" class="text-orange-500">€0,00</span></p>
-        <p class="text-lg font-bold">Carrello: <span id="total-quantity" class="text-orange-500">0</span></p>
+     <!-- TOTAL DO CARRINHO -->
+     <div class="text-center mb-6">
+        <p class="text-lg font-bold">Scontrino: <span id="total-price" class="text-orange-500">€0,00</span></p>
+        <p class="text-lg font-bold">Carrelo: <span id="total-quantity" class="text-orange-500">0</span></p>
+        <button id="finalize-order" class="bg-orange-500 text-white px-4 py-2 rounded mt-4">Confirmar Pedido</button>
+        <button id="clear-cart" class="bg-orange-500 text-white px-4 py-2 rounded mt-4 ml-4">Limpar Carrinho</button> <!-- Botão de limpar carrinho adicionado -->
     </div>
 
     <!-- INICIO DOS ITENS DE SECONDI PIATTI -->
@@ -63,22 +65,127 @@
     </div>
     <!-- FIM DOS ITENS DE SECONDI PIATTI -->
 
-    <script>
+     <!-- FIM DO MENU -->
+
+     <script>
         let total = 0;
         let totalQuantity = 0;
+        const cartItems = []; // Array para armazenar os itens do carrinho
 
-        function adjustQuantity(price, change) {
-            if (totalQuantity + change >= 0) {
-                totalQuantity += change;
-                total += change > 0 ? price : -price;
-                updateDisplay();
+        // Função para carregar os pratos da API
+        async function loadDishes() {
+            try {
+                const response = await fetch('http://localhost:3001/api/pratos/antipasti'); // Substitua pela sua rota de antipasti
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const dishes = await response.json();
+                displayDishes(dishes);
+            } catch (error) {
+                console.error('Erro ao carregar os pratos:', error);
             }
         }
 
+        // Função para exibir os pratos na página
+        function displayDishes(dishes) {
+            dishes.forEach(dish => {
+                // Atualiza o prato específico no DOM
+                const dishElement = document.getElementById(`dish-${dish.id}`);
+                if (dishElement) {
+                    const descriptionElement = dishElement.querySelector('p:nth-child(3)');
+                    const priceElement = dishElement.querySelector('p:nth-child(4)');
+                    descriptionElement.innerText = dish.description;
+                    priceElement.innerText = `€${dish.price.toFixed(2)}`;
+                    // Atualiza a função de ajustar quantidade com o preço correto
+                    dishElement.querySelector('button:nth-child(1)').setAttribute('onclick', `adjustQuantity(${dish.price}, 1, ${dish.id})`);
+                    dishElement.querySelector('button:nth-child(3)').setAttribute('onclick', `adjustQuantity(${dish.price}, -1, ${dish.id})`);
+                }
+            });
+        }
+
+        // Função para ajustar a quantidade no carrinho
+        function adjustQuantity(price, change, dishId) {
+            const existingItem = cartItems.find(item => item.id === dishId);
+            
+            // Não permite reduzir abaixo de 0
+            if (change < 0 && (!existingItem || existingItem.quantity === 0)) {
+                return;
+            }
+
+            totalQuantity += change;
+            totalQuantity = Math.max(0, totalQuantity); // Garante que não fique negativo
+
+            total += change > 0 ? price : -price;
+            total = Math.max(0, total); // Garante que o total não fique negativo
+
+            // Atualiza os itens do carrinho
+            if (change > 0) {
+                // Adiciona ou atualiza o prato no carrinho
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cartItems.push({ id: dishId, price: price, quantity: 1 });
+                }
+            } else {
+                // Reduz a quantidade ou remove o prato do carrinho
+                if (existingItem && existingItem.quantity > 0) {
+                    existingItem.quantity--;
+                    if (existingItem.quantity === 0) {
+                        const itemIndex = cartItems.indexOf(existingItem);
+                        cartItems.splice(itemIndex, 1); // Remove se a quantidade for 0
+                    }
+                }
+            }
+
+            updateDisplay();
+        }
+
+        // Função para atualizar a exibição do carrinho
         function updateDisplay() {
             document.getElementById("total-price").innerText = `€${total.toFixed(2)}`;
             document.getElementById("total-quantity").innerText = totalQuantity;
         }
+
+        // Função para finalizar o pedido
+        async function finalizeOrder() {
+            if (totalQuantity === 0) {
+                alert('Adicione itens ao carrinho antes de confirmar o pedido.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3001/api/pedidos', { // Substitua pela sua rota de pedidos
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cartItems), // Envia os itens do carrinho
+                });
+
+                if (response.ok) {
+                    alert('Pedido confirmado com sucesso!');
+                    // Limpa o carrinho
+                    clearCart();
+                } else {
+                    throw new Error('Erro ao confirmar o pedido.');
+                }
+            } catch (error) {
+                console.error('Erro ao confirmar o pedido:', error);
+            }
+        }
+
+        // Função para limpar o carrinho
+        function clearCart() {
+            total = 0;
+            totalQuantity = 0;
+            cartItems.length = 0; // Limpa os itens do carrinho
+            updateDisplay();
+        }
+
+        document.getElementById("finalize-order").addEventListener("click", finalizeOrder);
+        document.getElementById("clear-cart").addEventListener("click", clearCart);
+
+        loadDishes(); // Carrega os pratos ao carregar a página
     </script>
 </body>
 </html>
