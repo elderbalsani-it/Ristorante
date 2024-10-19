@@ -18,7 +18,6 @@
             <h1 class="text-4xl mt-4 mb-2 font-bold text-white">
             Secondi Piatti
             </h1>
-            </div>
         </div>
     </header>
     <!-- FIM DO HEADER -->
@@ -30,7 +29,7 @@
     <!-- TOTAL DO CARRINHO -->
     <div class="text-center mb-6">
         <p class="text-lg font-bold">Total: <span id="total-price" class="text-orange-500">€0,00</span></p>
-        <p class="text-lg font-bold">Carrelo: <span id="total-quantity" class="text-orange-500">0</span></p>
+        <p class="text-lg font-bold">Carrello: <span id="total-quantity" class="text-orange-500">0</span></p>
     </div>
 
     <!-- INICIO DOS ITENS DE SECONDI PIATTI -->
@@ -69,16 +68,11 @@
         let totalQuantity = 0;
 
         function adjustQuantity(price, change) {
-            totalQuantity += change;
-
-            // Impede que a quantidade fique negativa
-            if (totalQuantity < 0) {
-                totalQuantity = 0;
+            if (totalQuantity + change >= 0) {
+                totalQuantity += change;
+                total += change > 0 ? price : -price;
+                updateDisplay();
             }
-
-            // Atualiza o total com base na quantidade e no preço
-            total += change > 0 ? price : -price;
-            updateDisplay();
         }
 
         function updateDisplay() {
